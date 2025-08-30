@@ -45,7 +45,15 @@ func (r *cachedReader) Cache(b *buf.Buffer) {
 		r.cache, _ = buf.MergeMulti(r.cache, mb)
 	}
 	b.Clear()
-	rawBytes := b.Extend(buf.Size)
+	
+	// Calculate the actual size needed to avoid slice bounds error
+	cacheLen := r.cache.Len()
+	extendSize := buf.Size
+	if int(cacheLen) > buf.Size {
+		extendSize = int(cacheLen)
+	}
+	
+	rawBytes := b.Extend(int32(extendSize))
 	n := r.cache.Copy(rawBytes)
 	b.Resize(0, int32(n))
 	r.Unlock()
