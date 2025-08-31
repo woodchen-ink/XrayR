@@ -140,8 +140,6 @@ install_XrayR() {
     chmod +x XrayR
     mkdir /etc/XrayR/ -p
     rm /etc/systemd/system/XrayR.service -f
-    file="https://github.com/woodchen-ink/XrayR-release/raw/master/XrayR.service"
-    wget -q -N --no-check-certificate -O /etc/systemd/system/XrayR.service ${file}
     cp -f XrayR.service /etc/systemd/system/
     systemctl daemon-reload
     systemctl stop XrayR
