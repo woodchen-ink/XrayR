@@ -1,5 +1,16 @@
 # XrayR
 
+## 原XrayR-release安装脚本
+
+```bash
+bash <(curl -Ls https://raw.githubusercontent.com/woodchen-ink/XrayR/master/install/install.sh)
+```
+
+--- 
+
+- 修了一下`panic: runtime error: slice bounds out of range [:2306] with capacity 2048`的问题, 基本没断流了
+- 更新了go的版本为1.24
+
 [![](https://img.shields.io/badge/TgChat-@XrayR讨论-blue.svg)](https://t.me/XrayR_project)
 [![](https://img.shields.io/badge/Channel-@XrayR通知-blue.svg)](https://t.me/XrayR_channel)
 ![](https://img.shields.io/github/stars/XrayR-project/XrayR)
