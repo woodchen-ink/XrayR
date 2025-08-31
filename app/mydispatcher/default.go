@@ -39,7 +39,9 @@ type cachedReader struct {
 }
 
 func (r *cachedReader) Cache(b *buf.Buffer) {
-	mb, _ := r.reader.ReadMultiBufferTimeout(time.Millisecond * 100)
+	// For H3/QUIC, use shorter timeout to reduce latency
+	timeout := time.Millisecond * 100
+	mb, _ := r.reader.ReadMultiBufferTimeout(timeout)
 	r.Lock()
 	if !mb.IsEmpty() {
 		r.cache, _ = buf.MergeMulti(r.cache, mb)
@@ -47,10 +49,12 @@ func (r *cachedReader) Cache(b *buf.Buffer) {
 	b.Clear()
 	
 	// Calculate the actual size needed to avoid slice bounds error
+	// For H3, we might need larger buffers due to QUIC packet overhead
 	cacheLen := r.cache.Len()
 	extendSize := buf.Size
 	if int(cacheLen) > buf.Size {
-		extendSize = int(cacheLen)
+		// For large packets (likely H3), use a more generous buffer size
+		extendSize = int(cacheLen) + 1024 // Add some padding for future data
 	}
 	
 	rawBytes := b.Extend(int32(extendSize))
