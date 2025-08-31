@@ -142,9 +142,10 @@ install_XrayR() {
     rm /etc/systemd/system/XrayR.service -f
     file="https://github.com/woodchen-ink/XrayR-release/raw/master/XrayR.service"
     wget -q -N --no-check-certificate -O /etc/systemd/system/XrayR.service ${file}
-    #cp -f XrayR.service /etc/systemd/system/
+    cp -f XrayR.service /etc/systemd/system/
     systemctl daemon-reload
     systemctl stop XrayR
+    systemctl unmask XrayR
     systemctl enable XrayR
     echo -e "${green}XrayR ${last_version}${plain} 安装完成，已设置开机自启"
     cp geoip.dat /etc/XrayR/
