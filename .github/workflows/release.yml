@@ -61,7 +61,8 @@ jobs:
       - name: Build XrayR
         run: |
           mkdir -p build_assets
-          go build -v -o build_assets/XrayR -trimpath -ldflags "-s -w -buildid="
+          VERSION=${GITHUB_REF#refs/tags/}
+          go build -v -o build_assets/XrayR -trimpath -ldflags "-s -w -buildid= -X github.com/XrayR-project/XrayR/cmd.version=${VERSION}"
 
       - name: Build Mips softfloat XrayR
         if: matrix.goarch == 'mips' || matrix.goarch == 'mipsle'

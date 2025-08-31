@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	version  = "0.9.5"
+	version  = "dev" // Will be overridden by ldflags at build time
 	codename = "XrayR"
 	intro    = "A Xray backend that supports many panels"
 )
