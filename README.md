@@ -1,6 +1,6 @@
 # XrayR
 
-## 原XrayR-release安装脚本
+## XrayR-release安装脚本
 
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/woodchen-ink/XrayR/master/install/install.sh)
