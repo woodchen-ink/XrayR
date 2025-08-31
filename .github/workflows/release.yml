@@ -88,6 +88,7 @@ jobs:
             cp ${GITHUB_WORKSPACE}/release/config/custom_inbound.json ./build_assets/custom_inbound.json
             cp ${GITHUB_WORKSPACE}/release/config/rulelist ./build_assets/rulelist
             cp ${GITHUB_WORKSPACE}/release/config/config.yml.example ./build_assets/config.yml
+            cp ${GITHUB_WORKSPACE}/install/XrayR.sh ./build_assets/XrayR.sh
             LIST=('geoip geoip geoip' 'domain-list-community dlc geosite')
             for i in "${LIST[@]}"
             do
