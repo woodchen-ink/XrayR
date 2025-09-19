@@ -120,11 +120,30 @@ jobs:
           name: XrayR-${{ steps.get_filename.outputs.ASSET_NAME }}
           path: |
             ./XrayR-${{ steps.get_filename.outputs.ASSET_NAME }}/*
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        if: github.event_name == 'release'
+      - name: Get version and date
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        id: version
+        run: |
+          echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+          echo "version=v0.9.4" >> $GITHUB_OUTPUT
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./XrayR-${{ steps.get_filename.outputs.ASSET_NAME }}.zip*
-          tag: ${{ github.ref }}
-          file_glob: true
+          tag_name: ${{ steps.version.outputs.version }}-${{ steps.version.outputs.date }}
+          name: XrayR ${{ steps.version.outputs.version }} test-$(date +'%Y-%m-%d')
+          body: |
+            🤖 Automated build from commit ${{ github.sha }}
+
+            **Build Info:**
+            - Version: ${{ steps.version.outputs.version }}
+            - Build Number: #${{ github.run_number }}
+            - Commit: ${{ github.sha }}
+            - Date: $(date +'%Y-%m-%d')
+            - Branch: ${{ github.ref_name }}
+
+            **Changes:**
+            ${{ github.event.head_commit.message }}
+          files: ./XrayR-*.zip*
+          draft: false
+          prerelease: false
