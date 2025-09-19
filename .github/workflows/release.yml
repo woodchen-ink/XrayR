@@ -125,14 +125,16 @@ jobs:
         id: version
         run: |
           echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+          echo "datetime=$(date +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
           echo "formatted_date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+          echo "formatted_datetime=$(date +'%Y-%m-%d %H:%M')" >> $GITHUB_OUTPUT
           echo "version=v0.9.4" >> $GITHUB_OUTPUT
       - name: Create Release
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.version.outputs.version }}-${{ steps.version.outputs.date }}
-          name: XrayR ${{ steps.version.outputs.version }} test-${{ steps.version.outputs.formatted_date }}
+          tag_name: ${{ steps.version.outputs.version }}-${{ steps.version.outputs.datetime }}
+          name: XrayR ${{ steps.version.outputs.version }} test-${{ steps.version.outputs.formatted_datetime }}
           body: |
             🤖 Automated build from commit ${{ github.sha }}
 
