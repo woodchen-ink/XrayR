@@ -125,13 +125,14 @@ jobs:
         id: version
         run: |
           echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+          echo "formatted_date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
           echo "version=v0.9.4" >> $GITHUB_OUTPUT
       - name: Create Release
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.version }}-${{ steps.version.outputs.date }}
-          name: XrayR ${{ steps.version.outputs.version }} test-$(date +'%Y-%m-%d')
+          name: XrayR ${{ steps.version.outputs.version }} test-${{ steps.version.outputs.formatted_date }}
           body: |
             🤖 Automated build from commit ${{ github.sha }}
 
@@ -139,7 +140,7 @@ jobs:
             - Version: ${{ steps.version.outputs.version }}
             - Build Number: #${{ github.run_number }}
             - Commit: ${{ github.sha }}
-            - Date: $(date +'%Y-%m-%d')
+            - Date: ${{ steps.version.outputs.formatted_date }}
             - Branch: ${{ github.ref_name }}
 
             **Changes:**
